@@ -2,8 +2,8 @@
 * En este ejercicio debiamos simular el funcionamiento
 * de una puente H con 4 Reles SPDT gobernaods por un pulsador 
 * reactivo que nos permite cambiar el estado mediante una
-* pulsación; Hay 5 estados diferentes el estado 0 o en reposo
-* total al que se debera volver alcabo de 15s de los estados 2/4.
+* pulsación; Hay 5 estados diferentes el estado -1 o en reposo
+* total al que se debera volver alcabo de 15s de los estados 1/3.
 * Por el monitor serie deberan salir el estado y el valor de las salidas 
 * en cada momento.
 *
@@ -36,7 +36,7 @@
 #define R3 11
 
 int tiempo = 20; 
-int estado = 0; // Valor entero que varia de 0-4 en funcion del estado actual 
+int estado = -1; // Valor entero que varia de 0-4 en funcion del estado actual 
 int contador = 0; // Contador para el regreso de estado a 0
 bool r1 = 0; // Valor booleana de la salida 1
 bool r2 = 0; // Valor booleana de la salida 2
@@ -56,41 +56,41 @@ void setup(){ // Se define que son entradas y que son salidas
 void loop(){
   if(digitalRead(PUL)){ // Si se pulsa el pusador sucede:
     contador = 135; // Iniciar contador
-    if(estado >= 0 && estado <= 5){ // Condicion de suma +1 al estado mientras sea <=5
+    if(estado >= -1 && estado <= 4){ // Condicion de suma +1 al estado mientras sea <=5
       estado += 1;
     }
-    if(estado == 5){ // Reiniciar estado al llegar a 5 para tener valores de 0-4
-      estado = 1;
+    if(estado == 4){ // Reiniciar estado al llegar a 5 para tener valores de 0-4
+      estado = 0;
     }
   }
     while(digitalRead(PUL)){ // Esperar a que se suelte el pulsador
         delay (tiempo);
     }
-      if(estado == 1){ // En caso de estado 1
+      if(estado == 0){ // En caso de estado 1
         Rele(0, 1, 1, 0); // Llamada ala funcion Rele para acmbier valores (s1, s2, s3, s4)
         delay(tiempo); 
       }
-      if(estado == 2){ // En caso de estado 2
+      if(estado == 1){ // En caso de estado 2
         if(contador <= 135){ // Si el contador es menor o igual que 135:
           contador -= 1; // Desconta -1 a contador
           delay(50);
         }
-        Rele(0, 1, 1, 0); // Llamada ala funcion Rele para acmbier valores (s1, s2, s3, s4)
+        Rele(1, 1, 0, 0); // Llamada ala funcion Rele para acmbier valores (s1, s2, s3, s4)
         delay(tiempo);
       }
-      if(estado == 3){ // En caso de estado 3
+      if(estado == 2){ // En caso de estado 3
         Rele(1, 0, 0, 1); // Llamada ala funcion Rele para acmbier valores (s1, s2, s3, s4)
         delay(tiempo);
       }
-      if(estado == 4){ // En caso de estado 4
+      if(estado == 3){ // En caso de estado 4
         if(contador <= 135){ // Si el contador es menor o igual que 135:
           contador -= 1; // Desconta -1 a contador
           delay(50);
         }
-        Rele(0, 1, 1, 0); // Llamada ala funcion Rele para acmbier valores (s1, s2, s3, s4)
+        Rele(0, 0, 1, 1); // Llamada ala funcion Rele para acmbier valores (s1, s2, s3, s4)
         delay(tiempo);
       }
-      if(estado == 0){ // En caso de estado 0
+      if(estado == -1){ // En caso de estado 0
         if(digitalRead(PUL)){
           contador = 100;
           estado += 1;
@@ -99,7 +99,7 @@ void loop(){
         delay(tiempo);
       }
       if(contador <= 0){ // Si contador == 0 / estado == 0
-        estado = 0;
+        estado = -1;
         delay(tiempo);
       }
   r1 = digitalRead(8); // Asociación de valores boleanos a cada salida para mostrar en monitor serie

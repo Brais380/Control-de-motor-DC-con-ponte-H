@@ -6,7 +6,7 @@
 * total al que se debera volver alcabo de 15s de los estados 2/4.
 * Por el monitor serie deberan salir el estado y el valor de las salidas 
 * en cada momento.
-+
+*
 *  TABLA DE LA VERDAD                                         PERMITIDO 
 *   R1 R2 R3 R4 | S |                                        |          |
 *   0  0  0  0  | 0 | Parada por inercia                     |    S     |
